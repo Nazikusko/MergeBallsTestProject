@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5802511972113302875
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 86649443397484176, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Radius
+      value: 1.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 161604654428013141, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: _ballNumber
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 161604654428013141, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: particleColor.b
+      value: 0.77647066
+      objectReference: {fileID: 0}
+    - target: {fileID: 161604654428013141, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: particleColor.g
+      value: 0.039215688
+      objectReference: {fileID: 0}
+    - target: {fileID: 161604654428013141, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: particleColor.r
+      value: 0.89019614
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 19.043638
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.446902
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 533828110982710328, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577831196805488460, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Radius
+      value: 1.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646059439377148061, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Mass
+      value: 11.222083
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184123759413535061, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a149ae7014b8c9438d9ff05df0dac1d, type: 3}
+    - target: {fileID: 7615228707111834419, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a149ae7014b8c9438d9ff05df0dac1d, type: 3}
+    - target: {fileID: 7640043430192961928, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Radius
+      value: 1.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714044288906280994, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Mass
+      value: 11.103645
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745576819478175843, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Distance
+      value: 20.10529
+      objectReference: {fileID: 0}
+    - target: {fileID: 8229954666979931132, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Name
+      value: Ball6_
+      objectReference: {fileID: 0}
+    - target: {fileID: 8324164399727935907, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_Mass
+      value: 11.222083
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032479108550303123, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+      propertyPath: m_text
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
