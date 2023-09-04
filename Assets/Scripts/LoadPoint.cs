@@ -12,9 +12,9 @@ public class LoadPoint : MonoBehaviour
     private bool _isBallLoaded;
     private Coroutine _gameOverRoutine;
 
-    public Action OnLoadZoneClear;
-    public Action OnLoadZoneOccupied;
-    public Action OnGameOver;
+    public event Action OnLoadZoneClear;
+    public event Action OnLoadZoneOccupied;
+    public event Action OnGameOver;
 
     public bool IsLoadZoneClear => _isLoadZoneClear;
     public bool IsBallLoaded => _isBallLoaded;
@@ -64,7 +64,7 @@ public class LoadPoint : MonoBehaviour
     public void BallThrow()
     {
         _isBallLoaded = false;
-        _isLoadZoneClear = false;// this is for guaranteed call OnLoadZoneOccupied event
+        _isLoadZoneClear = false;// this is for guaranteed call OnLoadZoneClear event
 
         if (_gameOverRoutine == null) _gameOverRoutine = StartCoroutine(WaiteGameOverTimeout());
     }

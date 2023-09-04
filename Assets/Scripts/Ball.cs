@@ -14,7 +14,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private ParticleSystem _spawnParticles;
     [SerializeField] private Color particleColor;
 
-    public static Action<Ball, Ball, Vector2> OnBallsMatch;
+    public static event Action<Ball, Ball, Vector2> OnBallsMatch;
 
     public int BallNumber => _ballNumber;
     public Rigidbody2D BallRigidBody => _ballRigidBody;
