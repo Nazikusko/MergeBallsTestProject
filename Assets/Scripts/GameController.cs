@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class GameController : MonoBehaviour
 {
     private const float BALL_VELOCITY_MULTIPLAYER = 1.5f;
-    private const float SIMULATE_PHYSICS_DELTA = 0.1f;
+    private const float SIMULATE_PHYSICS_DELTA = 0.02f;
 
     [SerializeField] private InputController _inputController;
     [SerializeField] private Ball[] _ballsPrefabs;
@@ -27,8 +27,13 @@ public class GameController : MonoBehaviour
         _inputController.OnTouchOnScreenEnd += TouchOnScreenEnd;
         _loadPoint.OnLoadZoneClear += LoadRandomBall;
         _loadPoint.OnGameOver += GameOver;
-        Ball.OnBallsMatch += BallsMatch;
+        ColliderPart.OnBallsMatch += BallsMatch;
         _popUpWindow.Close();
+    }
+
+    void OnDisable()
+    {
+        ColliderPart.OnBallsMatch -= BallsMatch;
     }
 
     void Start()
@@ -59,8 +64,8 @@ public class GameController : MonoBehaviour
         if (hit.collider != null)
         {
             var velocityVector = hit.point - new Vector2(_loadPoint.transform.position.x, _loadPoint.transform.position.y);
-            _loadedBall.BallRigidBody.isKinematic = false;
-            _loadedBall.BallRigidBody.velocity = velocityVector * BALL_VELOCITY_MULTIPLAYER;
+            _loadedBall.SetKinematic(false);
+            _loadedBall.SetVelocity(velocityVector * BALL_VELOCITY_MULTIPLAYER);
             _ballsInCup.Add(_loadedBall);
             _loadedBall = null;
             _loadPoint.BallThrow();
@@ -73,7 +78,7 @@ public class GameController : MonoBehaviour
         _loadedBall = Instantiate(_ballsPrefabs[Random.Range(0, randomRange > 7 ? 7 : randomRange)],
             _loadPoint.transform.position, Quaternion.identity, _ballsParent);
 
-        _loadedBall.BallRigidBody.isKinematic = true;
+        _loadedBall.SetKinematic(true);
         _loadPoint.BallLoaded();
     }
 
@@ -93,15 +98,15 @@ public class GameController : MonoBehaviour
 
             var ball = Instantiate(_ballsPrefabs[randomBallNumber], _loadPoint.transform.position,
                 Quaternion.identity, _ballsParent);
-            ball.BallRigidBody.velocity = (new Vector2(Random.Range(-0.35f, 0.35f), 0)
-                                           - ToVector2(_loadPoint.transform.position)) * BALL_VELOCITY_MULTIPLAYER;
+            ball.SetVelocity(new Vector2(Random.Range(-0.35f, 0.35f), 0)
+                                           - ToVector2(_loadPoint.transform.position) * BALL_VELOCITY_MULTIPLAYER);
             _ballsInCup.Add(ball);
 
             SimulatePhysics(4f);
         }
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
 
-        _ballsInCup.ForEach(b => b.BallRigidBody.Sleep());
+        _ballsInCup.ForEach(b => b.Sleep());
     }
 
     private static void SimulatePhysics(float seconds)
@@ -134,7 +139,7 @@ public class GameController : MonoBehaviour
 
         var ball = Instantiate(_ballsPrefabs[ballNumber], point,
             Quaternion.identity, _ballsParent);
-        ball.SpawnedNewBall();
+        ball.SpawnNewBall();
         _ballsInCup.Add(ball);
     }
 
@@ -181,7 +186,7 @@ public class GameController : MonoBehaviour
         {
             var ball = Instantiate(_ballsPrefabs[9], Vector3.zero, Quaternion.identity, _ballsParent);
             _ballsInCup.Add(ball);
-            ball.SpawnedNewBall();
+            ball.SpawnNewBall();
         }
 #endif
         if (Input.GetKeyDown(KeyCode.Escape))

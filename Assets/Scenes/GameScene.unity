@@ -765,16 +765,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputController: {fileID: 1571879723}
   _ballsPrefabs:
-  - {fileID: 161604654428013141, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
-  - {fileID: 6715053606916271061, guid: 03c385efc18935d4786d01f373295a37, type: 3}
-  - {fileID: 2252283814654318253, guid: 6791c56894b835f468d2adb5dab7205d, type: 3}
-  - {fileID: 1883380507811923715, guid: ec5714db58a64354aa2fa06868f050dd, type: 3}
-  - {fileID: 1032111796509571562, guid: 74fb521e7253c664d8579f17040ab1c1, type: 3}
-  - {fileID: 5960667449840404238, guid: 419c657eb981305418a52f344c972efd, type: 3}
-  - {fileID: 1512419252366124341, guid: c5d5031e3eead4c43aa56a00ccd77f18, type: 3}
-  - {fileID: 2648903832731267774, guid: 524be69893ccac94196edb5f3a72e63a, type: 3}
-  - {fileID: 8408469105227337689, guid: d3b568bbf0208274aa0e1c3cb0139668, type: 3}
-  - {fileID: 3418341456760448192, guid: a11af4674d62d77429130c4d808baa9a, type: 3}
+  - {fileID: 8273785098747643989, guid: d491cdba3603f564bb284463d56d8a2a, type: 3}
+  - {fileID: 3304771911288775125, guid: 03c385efc18935d4786d01f373295a37, type: 3}
+  - {fileID: 3304771911288775125, guid: 8fb0cba7502d85f4eba376c1fac6ccec, type: 3}
+  - {fileID: 3304771911288775125, guid: 64096ce8149bd5947ad820c65b0c6036, type: 3}
+  - {fileID: 3304771911288775125, guid: 3bb797e6695c8cb45abdc2484e1a5b49, type: 3}
+  - {fileID: 3304771911288775125, guid: 553e82abb61583849b524d751caa4121, type: 3}
+  - {fileID: 3304771911288775125, guid: a74b575dc1933594181e85d443bd39d4, type: 3}
+  - {fileID: 3304771911288775125, guid: c4dd00e84720c5b479eeabdf8903d437, type: 3}
+  - {fileID: 3304771911288775125, guid: 8d40991c059753f4ab3376d139efc6fd, type: 3}
+  - {fileID: 3304771911288775125, guid: c3cd8ee0f0e65b34995412dfd5f38fd3, type: 3}
   _camera: {fileID: 519420031}
   _debugPointPrefab: {fileID: 1422008301022550300, guid: e9cb5395caf2ca444a90aef6d78be8ba, type: 3}
   _loadPoint: {fileID: 109983610}
@@ -1152,7 +1152,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00038045645, y: 0}
+  m_Offset: {x: -0.00038045645, y: -0.97}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1163,7 +1163,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1587073, y: 1}
+  m_Size: {x: 1.1587073, y: 3}
   m_EdgeRadius: 0
 --- !u!212 &1334752877
 SpriteRenderer:
@@ -1684,7 +1684,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2114041783}
   - component: {fileID: 2114041784}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: CheckZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
