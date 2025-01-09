@@ -8,15 +8,24 @@ public class InputController : MonoBehaviour
     public event Action<Vector2> OnTouchOnScreenEnd;
     public event Action<Vector2> OnTapOnScreen;
 
+    public TouchPhase TouchPhase => _touchPhase;
+
     private bool _isSwipe;
     private bool _isGameInputActive;
+    private TouchPhase _touchPhase = TouchPhase.Canceled;
+    private Vector2 _StartTouchLastposition;
 
     public bool IsGameInputActive
     {
         get => _isGameInputActive;
         set
         {
-            _isSwipe = false;
+            if (!value)
+            {
+                _touchPhase = TouchPhase.Canceled;
+                _isSwipe = false;
+            }
+
             _isGameInputActive = value;
         }
     }
@@ -24,34 +33,78 @@ public class InputController : MonoBehaviour
     void Update()
     {
         if (!IsGameInputActive)
+        {
             return;
-        TapOnScreenUpdate();
+        }
+
+        TouchOrMouseInputUpdate();
     }
 
-    private void TapOnScreenUpdate()
+    private void TouchOrMouseInputUpdate()
     {
-        if (Input.touchCount == 0) return;
+        var isPressed = IsPressed(out var position);
 
-        Touch touch = Input.GetTouch(0);
-
-        if (touch.phase == TouchPhase.Began)
+        if (isPressed)
         {
-            _isSwipe = false;
-            OnTouchOnScreenStart?.Invoke(touch.position);
-        }
-
-        if (touch.phase == TouchPhase.Moved)
-        {
-            _isSwipe = true;
-            OnTouchOnScreenMoved?.Invoke(touch.position);
-        }
-
-        if (touch.phase == TouchPhase.Ended)
-        {
-            if (_isSwipe)
-                OnTouchOnScreenEnd?.Invoke(touch.position);
+            if (_touchPhase == TouchPhase.Began || _touchPhase == TouchPhase.Moved)
+            {
+                if (_touchPhase == TouchPhase.Began && _StartTouchLastposition == position)
+                {
+                    return;
+                }
+                _touchPhase = TouchPhase.Moved;
+                _isSwipe = true;
+                OnTouchOnScreenMoved?.Invoke(position);
+            }
             else
-                OnTapOnScreen?.Invoke(touch.position);
+            {
+                _touchPhase = TouchPhase.Began;
+                _isSwipe = false;
+                _StartTouchLastposition = position;
+                OnTouchOnScreenStart?.Invoke(position);
+            }
         }
+        else
+        {
+            if (_touchPhase == TouchPhase.Ended || _touchPhase == TouchPhase.Canceled)
+            {
+                _touchPhase = TouchPhase.Canceled;
+            }
+            else
+            {
+                if (_isSwipe)
+                {
+                    OnTouchOnScreenEnd?.Invoke(position);
+                }
+                else
+                {
+                    OnTapOnScreen?.Invoke(position);
+                }
+
+                _isSwipe = false;
+
+                _touchPhase = TouchPhase.Ended;
+            }
+        }
+
+    }
+
+    private bool IsPressed(out Vector2 position)
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            position = touch.position;
+            return true;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            position = Input.mousePosition;
+            return true;
+        }
+
+        position = Input.mousePosition;
+        return false;
     }
 }

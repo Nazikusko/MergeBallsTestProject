@@ -13,30 +13,30 @@ public class ColliderPart : MonoBehaviour
 
     private void OnEnable()
     {
-        _ball = transform.parent.GetComponent<Ball>();
+        _ball = transform.parent.parent.GetComponent<Ball>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _rigidbody.mass = _ball.BallNumber * 0.01f;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_ball.IsInMargeProcess || collision.gameObject.layer != LayerMask.NameToLayer("Balls"))
+        if (_ball.IsInMergeProcess || collision.gameObject.layer != LayerMask.NameToLayer("Balls"))
             return;
 
         var otherBall = collision.transform.GetComponent<ColliderPart>().Ball;
-        if (otherBall.Guid.Equals(_ball.Guid) || otherBall.IsInMargeProcess)
+        if (otherBall.Guid.Equals(_ball.Guid) || otherBall.IsInMergeProcess)
             return;
 
         if (otherBall.BallNumber == _ball.BallNumber || _ball.BallNumber == 10 || otherBall.BallNumber == 10)
         {
             if (_ball.BallNumber != 10)
             {
-                _ball.IsInMargeProcess = true;
+                _ball.IsInMergeProcess = true;
             }
 
             if (otherBall.BallNumber != 10)
             {
-                otherBall.IsInMargeProcess = true;
+                otherBall.IsInMergeProcess = true;
             }
 
             OnBallsMatch?.Invoke(_ball, otherBall, collision.GetContact(0).point);

@@ -18,10 +18,18 @@ public class LoadPoint : MonoBehaviour
 
     public bool IsLoadZoneClear => _isLoadZoneClear;
     public bool IsBallLoaded => _isBallLoaded;
+    private Coroutine _scanZoneRoutine = null;
 
     public void StartScanLoadPoint()
     {
-        StartCoroutine(CheckLoadZoneStatus());
+        _scanZoneRoutine = StartCoroutine(CheckLoadZoneStatus());
+    }
+
+    public void StopScanLoadPoint()
+    {
+        if (_scanZoneRoutine != null) StopCoroutine(_scanZoneRoutine);
+        _isBallLoaded = false;
+        _isLoadZoneClear = false;
     }
 
     private IEnumerator CheckLoadZoneStatus()

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class GameController : MonoBehaviour
 {
     private const float BALL_VELOCITY_MULTIPLAYER = 1.5f;
     private const float SIMULATE_PHYSICS_DELTA = 0.02f;
+    private const int MAX_BALL_NUMBER_FOR_SPAWN = 7;
 
     [SerializeField] private InputController _inputController;
     [SerializeField] private Ball[] _ballsPrefabs;
@@ -17,28 +19,35 @@ public class GameController : MonoBehaviour
     [SerializeField] private LoadPoint _loadPoint;
     [SerializeField] private Transform _ballsParent;
     [SerializeField] private PopUpWindow _popUpWindow;
+    [SerializeField] private Transform _nextBallPlace;
 
+    private Queue<int> _randomBallsQueue = new Queue<int>();
     private Ball _loadedBall;
     private List<Ball> _ballsInCup = new List<Ball>();
+    private Ball _nextBall;
 
     void Awake()
     {
         _inputController.OnTapOnScreen += TapOnScreenHolder;
         _inputController.OnTouchOnScreenEnd += TouchOnScreenEnd;
         _loadPoint.OnLoadZoneClear += LoadRandomBall;
-        _loadPoint.OnGameOver += GameOver;
         ColliderPart.OnBallsMatch += BallsMatch;
+        _loadPoint.OnGameOver += GameOver;
         _popUpWindow.Close();
     }
 
     void OnDisable()
     {
+        _inputController.OnTapOnScreen -= TapOnScreenHolder;
+        _inputController.OnTouchOnScreenEnd -= TouchOnScreenEnd;
+        _loadPoint.OnLoadZoneClear -= LoadRandomBall;
         ColliderPart.OnBallsMatch -= BallsMatch;
+        _loadPoint.OnGameOver -= GameOver;
     }
 
     void Start()
     {
-        RestartGame();
+        StartCoroutine(RestartGame());
     }
 
     private void TouchOnScreenEnd(Vector2 position)
@@ -75,9 +84,17 @@ public class GameController : MonoBehaviour
     private void LoadRandomBall()
     {
         int randomRange = _ballsInCup.Max(b => b.BallNumber);
-        _loadedBall = Instantiate(_ballsPrefabs[Random.Range(0, randomRange > 7 ? 7 : randomRange)],
-            _loadPoint.transform.position, Quaternion.identity, _ballsParent);
 
+        do
+        {
+            _randomBallsQueue.Enqueue(Random.Range(0, randomRange > MAX_BALL_NUMBER_FOR_SPAWN ? MAX_BALL_NUMBER_FOR_SPAWN : randomRange));
+        } while (_randomBallsQueue.Count < 2);
+
+        SetNextBallView(_randomBallsQueue.ToArray()[1]);
+
+        _loadedBall = Instantiate(_ballsPrefabs[_randomBallsQueue.Dequeue()],
+            _loadPoint.transform.position, Quaternion.identity, _ballsParent);
+        _loadedBall.Init(BallInitMode.Soft);
         _loadedBall.SetKinematic(true);
         _loadPoint.BallLoaded();
     }
@@ -98,6 +115,7 @@ public class GameController : MonoBehaviour
 
             var ball = Instantiate(_ballsPrefabs[randomBallNumber], _loadPoint.transform.position,
                 Quaternion.identity, _ballsParent);
+            ball.Init(BallInitMode.Soft);
             ball.SetVelocity(new Vector2(Random.Range(-0.35f, 0.35f), 0)
                                            - ToVector2(_loadPoint.transform.position) * BALL_VELOCITY_MULTIPLAYER);
             _ballsInCup.Add(ball);
@@ -139,6 +157,7 @@ public class GameController : MonoBehaviour
 
         var ball = Instantiate(_ballsPrefabs[ballNumber], point,
             Quaternion.identity, _ballsParent);
+        ball.Init(BallInitMode.Hard);
         ball.SpawnNewBall();
         _ballsInCup.Add(ball);
     }
@@ -148,7 +167,7 @@ public class GameController : MonoBehaviour
         _inputController.IsGameInputActive = false;
         _popUpWindow.SetOkButtonText("Restart").
             SetCancelButtonText("Quit").
-            ShowWindow("You Win!\nDo you want to restart the game?", RestartGame, () => Application.Quit());
+            ShowWindow("You Win!\nDo you want to restart the game?", () => StartCoroutine(RestartGame()), () => Application.Quit());
     }
 
     private void GameOver()
@@ -156,21 +175,38 @@ public class GameController : MonoBehaviour
         _inputController.IsGameInputActive = false;
         _popUpWindow.SetOkButtonText("Restart").
             SetCancelButtonText("Quit").
-            ShowWindow("Game Over\nDo you want to restart the game?", RestartGame, () => Application.Quit());
+            ShowWindow("Game Over\nDo you want to restart the game?", () => StartCoroutine(RestartGame()), () => Application.Quit());
     }
 
-    private void RestartGame()
+    private IEnumerator RestartGame()
     {
-        StopAllCoroutines();
+        _randomBallsQueue.Clear();
+        _inputController.IsGameInputActive = false;
+        _loadPoint.StopScanLoadPoint();
         _ballsInCup.ForEach(b => Destroy(b.gameObject));
         _ballsInCup.Clear();
 
         if (_loadedBall != null) Destroy(_loadedBall.gameObject);
+        yield return null;
 
         SpawnRandomBallsInCup();
+        yield return null;
+
         LoadRandomBall();
         _loadPoint.StartScanLoadPoint();
         DOVirtual.DelayedCall(0.5f, () => _inputController.IsGameInputActive = true);
+    }
+
+    private void SetNextBallView(int ballIndex)
+    {
+        if (_nextBall != null)
+        {
+            Destroy(_nextBall.gameObject);
+        }
+
+        _nextBall = Instantiate(_ballsPrefabs[ballIndex], _nextBallPlace.position,
+            Quaternion.identity, _nextBallPlace);
+        _nextBall.Init(BallInitMode.Ui);
     }
 
     private Vector2 ToVector2(Vector3 vector3) => new Vector2(vector3.x, vector3.y);
@@ -179,8 +215,10 @@ public class GameController : MonoBehaviour
     {
 
 #if UNITY_EDITOR
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
             GameOver();
+        }
 
         if (Input.GetKeyUp(KeyCode.W))
         {
@@ -190,6 +228,8 @@ public class GameController : MonoBehaviour
         }
 #endif
         if (Input.GetKeyDown(KeyCode.Escape))
+        {
             Application.Quit();
+        }
     }
 }
